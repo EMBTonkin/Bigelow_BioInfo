@@ -1,9 +1,8 @@
-
- 
 import multiprocessing
 from itertools import izip_longest
  
 def process_chunk(d):
+	#Just a silly function which proves this is doing something by taking the name of the sequence and adding a know fact to it,
 	return d[0]+ "Lizzie is cool"
  
 def grouper(iterable, n, fillvalue=None):
@@ -14,7 +13,6 @@ def grouper(iterable, n, fillvalue=None):
  
 if __name__ == '__main__':
  
-	
 	test_data = file("test.fastq", 'rU').readlines()
 	
 	p = multiprocessing.Pool(4)
