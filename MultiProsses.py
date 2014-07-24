@@ -26,10 +26,19 @@ def grouper(iterable, n, fillvalue=None):
 # filename: string, name of the fastq file
 # returns generator, which yields three element lists containing the important parts of each fastq record.
 def makeFASTQGenerator(filename):
-	data =  file(filename, 'rU').readlines()
-	for chunk in grouper(data, 4):
-		chunky = [chunk[0].strip("\n"),chunk[1].strip("\n"),chunk[3].strip("\n")]
-		yield chunky
+	with open(filename, 'rU') as f:
+		for i in range(5):
+			fifth = f.readline()
+		if fifth == "\n":
+			f.seek(0)
+			for chunk in grouper(f.readlines(), 5):
+				chunky = [chunk[0].strip("\n"),chunk[1].strip("\n"),chunk[3].strip("\n")]
+				yield chunky
+		else:
+			f.seek(0)
+			for chunk in grouper(f.readlines(), 4):
+				chunky = [chunk[0].strip("\n"),chunk[1].strip("\n"),chunk[3].strip("\n")]
+				yield chunky
 
 
 # Maine function
@@ -42,6 +51,7 @@ if __name__ == '__main__':
 		print 'usage: python MultiProsses.py <filename.fastq>'
 		print ''
 		quit()
+	
 	
 	
 	p = multiprocessing.Pool(4)
