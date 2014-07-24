@@ -40,6 +40,15 @@ def makeFASTQGenerator(filename):
 				chunky = [chunk[0].strip("\n"),chunk[1].strip("\n"),chunk[3].strip("\n")]
 				yield chunky
 
+# validates records by making sure all three parts of the record exist
+# filename: string, name of the fastq file
+# returns boolian: true if the records in the file are valid, false of not.
+def validateRecords(filename):
+	for record in makeFASTQGenerator(filename):
+		for part in record:
+			if part.isspace() or (part == ""):
+				return False
+	return True
 
 # Maine function
 if __name__ == '__main__':
@@ -52,7 +61,13 @@ if __name__ == '__main__':
 		print ''
 		quit()
 	
-	
+	# check for proper record formatting
+	if validateRecords(sys.argv[1]) == False:
+		print ''
+		print 'Error!  Invalid input!'
+		print 'Something in your record is invalid.  Make sure that all parts of the record are there and formated consistently'
+		print ''
+		quit()
 	
 	p = multiprocessing.Pool(4)
 	
