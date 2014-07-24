@@ -4,6 +4,7 @@
 
 
 # Important Import Stuff
+import sys
 import multiprocessing
 from itertools import izip_longest
 
@@ -34,9 +35,18 @@ def makeFASTQGenerator(filename):
 # Maine function
 if __name__ == '__main__':
 	
+	# check for proper amount of command line arguments
+	if len(sys.argv) < 2:
+		print ''
+		print 'Oi!  Inproper file usage!'
+		print 'usage: python MultiProsses.py <filename.fastq>'
+		print ''
+		quit()
+	
+	
 	p = multiprocessing.Pool(4)
 	
-	for name, seq, qual in makeFASTQGenerator("test.fastq"):
+	for name, seq, qual in makeFASTQGenerator(sys.argv[1]):
 		print name
 		print seq
 		print qual
