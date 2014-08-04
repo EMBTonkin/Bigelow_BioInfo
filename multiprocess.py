@@ -5,6 +5,7 @@ Lizzie Tonkin
 Multiprocessing of fastq files
 Bigelow Internship, 2014
 """
+import time
 
 # Important Import Stuff
 import argparse
@@ -38,15 +39,12 @@ def processChunk(chunk):
 	
 	# caluculate the CG %
 	gc = 0.0
-	for char in sequence:
-		if (char == "C") or (char == "G"):
-			gc += 1
+	gc += sequence.count("G")
+	gc += sequence.count("C")
 	gcContent = gc / (len(sequence))
 	
 	#print out the lovely results in a mildly understandable way
-	print name
-	print "GC content is "+ str(gcContent)
-	print
+	return gcContent
 
 
 def grouper(iterable, n, fillvalue=None):
@@ -101,9 +99,15 @@ def main(fastq):
 #	if not validateRecords(fastq):
 #		print "Check your input is formatted nicely"
 #		quit()
-	
+	now = time.time()
+	total = 0.0
+	gc = 0.0
 	for record in read_fastq(fastq):
-		processChunk(record)
+		gc += processChunk(record)
+		total += 1
+	gcContent = gc/total
+	print "The average CG content of this fastq is "+str(gcContent)
+	print "The amount of time taken was "+str(time.time()-now)
 
 
 # Maine function
